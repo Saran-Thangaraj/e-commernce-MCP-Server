@@ -150,7 +150,10 @@ async def call_tool(name: str, arguments: dict):
             text = f"Rejected: {e}" ## LLM reads this message and understands the query was rejected, and can adjust the query and try again.
         return [TextContent(type="text", text=text)]
 
-    raise ValueError(f"Unknown tool: {name}")
+    return [TextContent(
+        type="text",
+        text=f"Tool '{name}' not found. Available tools: get_schema, preview_query, query_db."
+    )]
 
 
 # ── entry point ───────────────────────────────────────────────────────────────
