@@ -21,17 +21,7 @@ source venv/bin/activate        # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-### 3. Set up your API key
-
-Create a `.env` file in the root folder:
-
-```
-ANTHROPIC_API_KEY=your_api_key_here
-```
-
-Get your key from [console.anthropic.com](https://console.anthropic.com).
-
-### 4. Set up the database
+### 3. Set up the database
 
 ```bash
 cd sql
@@ -39,11 +29,31 @@ python setup_db.py    # creates e_commerce.db
 python seed_data.py   # populates with sample data
 ```
 
-### 5. Run the MCP server
+### 4. Connect via Claude Desktop (recommended — no API key needed)
 
-```bash
-python sql/mcp_server.py
+This server is designed to work with **Claude Desktop** as the client. You do not need an Anthropic API key — a free or Pro Claude.ai account is enough.
+
+Add the following to your Claude Desktop config file:
+
+**Mac:** `~/Library/Application Support/Claude/claude_desktop_config.json`  
+**Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
+
+```json
+{
+  "mcpServers": {
+    "e-commerce": {
+      "command": "python",
+      "args": ["/absolute/path/to/e-commernce-MCP-Server/sql/mcp_server.py"]
+    }
+  }
+}
 ```
+
+Replace `/absolute/path/to/` with the actual path where you cloned the repo. Then restart Claude Desktop — the tools (`get_schema`, `preview_query`, `query_db`) will appear automatically.
+
+### Alternative: Custom Python client (requires Anthropic API key)
+
+If you want to build your own client instead of using Claude Desktop, you will need an API key from [console.anthropic.com](https://console.anthropic.com) and can use the `anthropic` library included in `requirements.txt`.
 
 ---
 
