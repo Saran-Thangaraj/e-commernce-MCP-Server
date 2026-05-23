@@ -106,6 +106,36 @@ The schema is **never** embedded in tool descriptions. It enters the context onl
 
 ---
 
+## How MCP works internally
+
+When the MCP server starts, `list_tools()` fires once and sends all tool definitions to the client (e.g. Claude Desktop). The client passes these definitions to the LLM alongside every user message so the LLM knows what tools are available.
+
+When the LLM decides to use a tool, the client invokes `call_tool()` with the tool name and arguments as JSON. `call_tool()` hits the external data source (SQLite DB), converts the Python result into a plain string, and returns it as `TextContent` back to the LLM so it can form a response.
+
+```
+Server starts
+     │
+     ▼
+list_tools() ──► sends tool definitions to client ──► LLM knows what tools exist
+                                                              │
+                                          User asks a question│
+                                                              ▼
+                                             LLM picks a tool + arguments
+                                                              │
+                                                              ▼
+                                        call_tool(name, args) ──► hits DB
+                                                              │
+                                             Python result converted to string
+                                                              │
+                                                              ▼
+                                                  TextContent ──► back to LLM
+                                                              │
+                                                              ▼
+                                                     Answer to user
+```
+
+---
+
 ## LLM call flow
 
 ```
