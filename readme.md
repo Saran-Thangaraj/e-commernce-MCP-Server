@@ -1,3 +1,68 @@
+# E-commerce MCP Server
+
+An MCP (Model Context Protocol) server that connects Claude to a SQLite e-commerce database using a schema-on-demand tool design.
+
+---
+
+## Getting Started
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/Saran-Thangaraj/e-commernce-MCP-Server.git
+cd e-commernce-MCP-Server
+```
+
+### 2. Create a virtual environment and install dependencies
+
+```bash
+python -m venv venv
+source venv/bin/activate        # Windows: venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+### 3. Set up your API key
+
+Create a `.env` file in the root folder:
+
+```
+ANTHROPIC_API_KEY=your_api_key_here
+```
+
+Get your key from [console.anthropic.com](https://console.anthropic.com).
+
+### 4. Set up the database
+
+```bash
+cd sql
+python setup_db.py    # creates e_commerce.db
+python seed_data.py   # populates with sample data
+```
+
+### 5. Run the MCP server
+
+```bash
+python sql/mcp_server.py
+```
+
+---
+
+## Project Structure
+
+```
+e-commernce-MCP-Server/
+├── sql/
+│   ├── mcp_server.py   ← MCP server with 3 tools
+│   ├── setup_db.py     ← creates the SQLite schema
+│   ├── seed_data.py    ← populates sample e-commerce data
+│   └── e_commerce.db   ← SQLite database
+├── requirements.txt
+├── .gitignore
+└── readme.md
+```
+
+---
+
 # MCP Tool Design: Schema-on-Demand
 
 ## Problem with embedding schema in tool descriptions
