@@ -49,6 +49,10 @@ def run_query(sql: str) -> list:
 
 
 # ── tools ─────────────────────────────────────────────────────────────────────
+# list_tools() fires once when the MCP server starts.
+# The client (e.g. Claude Desktop) reads these tool definitions and passes them
+# to the LLM alongside every user message. The LLM decides which tool to call
+# based on the user's question and the tool descriptions below.
 @server.list_tools()
 async def list_tools():
     return [
@@ -111,6 +115,10 @@ async def list_tools():
 
 
 # ── tool handler ──────────────────────────────────────────────────────────────
+# call_tool() is invoked by the client after the LLM picks a tool.
+# It receives the tool name and arguments as JSON (parsed into a Python dict),
+# calls the appropriate DB helper, converts the result to a plain string,
+# and returns it as TextContent so the LLM can read it and form a response.
 @server.call_tool()
 async def call_tool(name: str, arguments: dict):
     if name == "get_schema":
